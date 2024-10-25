@@ -1,0 +1,74 @@
+Jenkins Installation
+
+-------------------------------------------------------
+
+1. Create EC2 server with T2 micro 
+
+2. apt update
+
+3. Jenkins Installation
+----------------------------------
+java installation:
+
+apt install openjdk-11-jdk -y
+
+
+run the below jenkins packages in the terminal:
+
+wget -O /usr/share/keyrings/jenkins-keyring.asc \
+    https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
+
+echo "deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc]" \
+    https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
+    /etc/apt/sources.list.d/jenkins.list > /dev/null
+
+apt-get update
+
+apt-get install jenkins -y
+
+apt-get install maven -y
+
+4. start the jenkins service
+
+service jenkins start
+
+
+5. goto browser copy public ip address of jenkins server followed by :8080 and enter. 
+
+copy the initial password generated for jenkins using the below command and complete the jenkins setup
+
+   cat /var/lib/jenkins/secrets/initialAdminPassword 
+
+Jenkins configuration steps
+---------------------------
+
+6. Next goto jenkins dashboard and configure both java & maven
+
+    manage jenkins--> global tool configuration -->JDK --> 
+
+   add jdk -->
+
+       	name--> java    
+	java home path --> /usr/lib/jvm/java-11-openjdk-amd64/
+
+   add maven --> 
+    
+  	name--> maven   
+	maven home path --> /usr/share/maven/
+
+apply and save
+
+7. goto new item create a new project --> freestyle project
+
+8. configure --> git--> repository url 
+
+9. goto build section --> invoke top level maven targets  -->
+
+	maven version --> maven
+	goals ---> clean package   
+	advanced--> pom -->pom.xml 
+ 
+apply->save->build.
+
+10. Build the job once, if get success then it will generate a war file.
+
